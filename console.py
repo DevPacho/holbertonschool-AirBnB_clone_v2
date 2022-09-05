@@ -130,9 +130,8 @@ class HBNBCommand(cmd.Cmd):
         parameters = {}
         for parameter in args[1:]:
             args_splitted = parameter.split("=")
-
-            parameters[args_splitted[0]] = args_splitted[1].replace(
-                "_", " ").strip('"')
+            args_splitted[1] = args_splitted[1].replace('\"').replace(
+                "_", " ")
 
         new_instance = HBNBCommand.classes[args[0]]()
 
