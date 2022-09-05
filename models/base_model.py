@@ -15,7 +15,7 @@ class BaseModel:
             self.updated_at = datetime.now()
             storage.new(self)
 
-        elif kwargs.get("updated_at") is None:
+        elif kwargs and kwargs.get("updated_at") is None:
             self.id = str(uuid.uuid4)
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
