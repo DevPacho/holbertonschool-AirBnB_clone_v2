@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ Console Module """
+from ast import arg
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -113,8 +114,9 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
-        """ Create an object of any class"""
+
+    """def do_create(self, args):
+        Create an object of any class
         if not args:
             print("** class name missing **")
             return
@@ -124,7 +126,33 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
-        storage.save()
+        storage.save()"""
+
+    def do_create(self, args):
+        """ Create an object of any class """
+        if not args:
+            print("** class name missing **")
+            return
+        arguments = args.split()
+        new_class = arguments[0]
+
+        if new_class not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        new_instance = HBNBCommand.classes[new_class]()
+        
+        for argument in arguments[1:]:
+            # pacho hace magia
+            print(f"from inside the loop: {argument}")
+            # separar los parametros por el = el formato
+            # name="California"
+
+            parametro = argument.split('=')
+            for param in parametro:
+                print(f"Par key value separado: {param}")
+        # storage.save()
+        print(new_instance.id)
+        # storage.save()
 
     def help_create(self):
         """ Help information for the create method """
