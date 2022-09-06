@@ -34,18 +34,18 @@ class DBStorage:
 
         objects = {}
 
-        if cls is None:
+        if cls:
+            query = self.__session.query(cls).all()
+
+            for object in query:
+                objects[f"{object.__class__}.{object.id}"] = object
+
+        else:
             for input_class in self.classes:
                 query = self.__session.query(input_class).all()
 
                 for object in query:
                     objects[f"{object.__class__}.{object.id}"] = object
-
-        else:
-            query = self.__session.query(cls).all()
-
-            for object in query:
-                objects[f"{object.__class__}.{object.id}"] = object
         return objects
 
     def new(self, obj):
