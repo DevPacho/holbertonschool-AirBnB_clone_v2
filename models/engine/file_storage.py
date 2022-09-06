@@ -18,14 +18,11 @@ class FileStorage:
         """Returns a dictionary of models currently in storage"""
         # print(f"inside of all : {type(cls)} : {cls}")
         if cls:
-            if type(cls) == str:
-                cls = eval(cls)
             dict = {}
             for k, v in FileStorage.__objects.items():
                 # print(f"inside the loop :\n {k} : {v}")
                 # print("/*/*/*/*/*/*/*/*/*/*/*/*/**/*/*/*")
-                if type(v) == cls:
-                    dict[k] = v
+                dict[k] = v
             return dict
         return FileStorage.__objects
 
