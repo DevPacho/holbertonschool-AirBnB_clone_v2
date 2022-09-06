@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Module that defines the new engine 'DBStorage' for MySQL"""
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
@@ -11,25 +12,41 @@ from models.state import State
 from models.user import User
 
 
-
 class DBStorage:
+    """Engine for connect to MySQL"""
+
     __engine = None
     __session = None
     classes = ["User", "State", "City", "Amenity", "Place", "Review"]
 
     def __init__(self):
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".format(getenv('HBNB_MYSQL_USER'),
-                                                                           getenv('HBNB_MYSQL_PWD'),
-                                                                           getenv('HBNB_MYSQL_HOST'),
-                                                                           getenv('HBNB_MYSQL_DB')),
-                                                                           pool_pre_ping=True)
+        self.__engine = create_engine(
+            "mysql+mysqldb://{}:{}@{}/{}".format(
+                getenv('HBNB_MYSQL_USER'), getenv('HBNB_MYSQL_PWD'),
+                getenv('HBNB_MYSQL_HOST'), getenv('HBNB_MYSQL_DB')),
+            pool_pre_ping=True)
 
         if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """List current database session"""
-        pass
+        """Get all objects of a class or all the classes"""
+
+        objects = {}
+
+        if cls is None:
+            for input_class in self.classes:
+                query = self.__session.query(input_class).all()
+
+                for object in query:
+                    objects[f"{object.__class__}.{object.id}"] = object
+
+        else:
+            query = self.__session.query(cls).all()
+
+            for object in query:
+                objects[f"{object.__class__}.{object.id}"] = object
+        return objects
 
     def new(self, obj):
         """Adds the object to the current session"""
@@ -48,7 +65,7 @@ class DBStorage:
         """Reload all tables in the database"""
 
         Base.metadata.create_all(self.__engine)
-        my_session = sessionmaker(bind=self.__engine,
-                                  expire_on_commit=False)
+        my_session = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(my_session)
         self.__session = Session()
