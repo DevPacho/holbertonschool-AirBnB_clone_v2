@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] == '}'\
+                    if pline[0] == '{' and pline[-1] =='}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -140,32 +140,6 @@ class HBNBCommand(cmd.Cmd):
 
         new_instance.save()
         print(new_instance.id)
-
-    """def do_create(self, args):
-        Create an object of any class
-        if not args:
-            print("** class name missing **")
-            return
-        arguments = args.split()
-        new_class = arguments[0]
-
-        if new_class not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[new_class]()
-
-        for argument in arguments[1:]:
-            # pacho hace magia
-            print(f"from inside the loop: {argument}")
-            # separar los parametros por el = el formato
-            # name="California"
-
-            parametro = argument.split('=')
-            for param in parametro:
-                print(f"Par key value separado: {param}")
-        # storage.save()
-        print(new_instance.id)
-        # storage.save()"""
 
     def help_create(self):
         """ Help information for the create method """
@@ -247,13 +221,13 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for _, value in storage.all(HBNBCommand.classes[args]).items():
-                del value.__dict__['_sa_instance_state']
-                print_list.append(str(value))
+            for _, v in storage.all(HBNBCommand.classes[args]).items():
+                del v.__dict__['_sa_instance_state']
+                print_list.append(str(v))
         else:
-            for _, value in storage.all().items():
-                del value.__dict__['_sa_instance_state']
-                print_list.append(str(value))
+            for _, v in storage.all().items():
+                del v.__dict__['_sa_instance_state']
+                print_list.append(str(v))
 
         print(print_list)
 
@@ -361,7 +335,6 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
-
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
