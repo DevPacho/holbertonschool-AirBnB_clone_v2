@@ -16,15 +16,15 @@ class State(BaseModel, Base):
     cities = relationship("City", cascade="delete", backref="state")
 
 
-if os.getenv('HBNB_TYPE_STORAGE') != "db":
-    # with state_id equals to the current State.id
-    # just for filestore returns the list of City instances
-    # @property, puede ser usado para modificar un atributo o propiedad.
-    @property
-    def cities(self):
-        """Returns the list of City instances"""
-        new_list = []
-        for city in list(models.storage.all(City).values()):
-            if city.state_id == self.id:
-                new_list.append(city)
-        return new_list
+    if os.getenv('HBNB_TYPE_STORAGE') != "db":
+        # with state_id equals to the current State.id
+        # just for filestore returns the list of City instances
+        # @property, puede ser usado para modificar un atributo o propiedad.
+        @property
+        def cities(self):
+            """Returns the list of City instances"""
+            new_list = []
+            for city in list(models.storage.all(City).values()):
+                if city.state_id == self.id:
+                    new_list.append(city)
+            return new_list
