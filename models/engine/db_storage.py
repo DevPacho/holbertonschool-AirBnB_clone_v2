@@ -17,7 +17,7 @@ class DBStorage:
 
     __engine = None
     __session = None
-    classes = ["User", "State", "City", "Amenity", "Place", "Review"]
+    classes = ['User', 'State', 'City', 'Amenity', 'Place', 'Review']
 
     def __init__(self):
         self.__engine = create_engine(
@@ -60,6 +60,7 @@ class DBStorage:
         """Deletes from the db session obj if not None"""
         if obj:
             self.__session.delete(obj)
+            self.save()
 
     def reload(self):
         """Reload all tables in the database"""

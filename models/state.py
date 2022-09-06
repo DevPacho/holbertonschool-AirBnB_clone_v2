@@ -5,21 +5,18 @@ from models.city import City
 import models
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String
-import os
+from os import getenv
 
 
 class State(BaseModel, Base):
     """ State class """
-
-    __tablename__ = "states"
+    __tablename__ = 'states'
     name = Column(String(128), nullable=False)
-    cities = relationship("City", cascade="delete", backref="state")
 
+    if getenv("HBNB_TYPE_STORAGE") == "db":
+        cities = relationship("City", cascade="delete", backref="state")
 
-    if os.getenv('HBNB_TYPE_STORAGE') != "db":
-        # with state_id equals to the current State.id
-        # just for filestore returns the list of City instances
-        # @property, puede ser usado para modificar un atributo o propiedad.
+    else:
         @property
         def cities(self):
             """Returns the list of City instances"""
