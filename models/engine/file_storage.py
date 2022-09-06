@@ -22,7 +22,7 @@ class FileStorage:
             for k, v in FileStorage.__objects.items():
                 # print(f"inside the loop :\n {k} : {v}")
                 # print("/*/*/*/*/*/*/*/*/*/*/*/*/**/*/*/*")
-                if type(v) == cls.__name__:
+                if type(v) == cls:
                     dict[k] = v
             return dict
         return FileStorage.__objects
