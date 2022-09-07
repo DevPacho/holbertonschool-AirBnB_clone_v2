@@ -8,13 +8,13 @@ from sqlalchemy.orm import relationship
 import models
 from models.review import Review
 
-association_table = Table('place_amenity', Base.metadata,
+"""association_table = Table('place_amenity', Base.metadata,
                           Column('place_id', String(60),
                                  ForeignKey('places.id'),
                                  primary_key=True, nullable=False),
                           Column('amenity_id', String(60),
                                  ForeignKey('amenities.id'),
-                                 primary_key=True, nullable=False))
+                                 primary_key=True, nullable=False))"""
 
 
 class Place(BaseModel, Base):
@@ -33,11 +33,20 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, nullable=False, default=0)
         latitude = Column(Float)
         longitude = Column(Float)
-        reviews = relationship(
-            "Review", cascade="all, delete", backref="place")
-        amenities = relationship(
+        reviews = relationship("Review", cascade="all, delete",
+                               backref="place")
+        place_amenity = Table("place_amenity", Base.metadata,
+                              Column("place_id", String(60),
+                                     ForeignKey("places.id"),
+                                     primary_key=True),
+                              Column("amenity_id", String(60),
+                                     ForeignKey("amenities.id"),
+                                     primary_key=True))
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 viewonly=False)
+        """amenities = relationship(
             "Amenity", secondary='place_amenity',
-            back_populates='place_amenities', viewonly=False)
+            back_populates='place_amenities', viewonly=False)"""
 
     else:
         city_id = ""
