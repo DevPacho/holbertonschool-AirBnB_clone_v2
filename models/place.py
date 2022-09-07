@@ -1,11 +1,20 @@
 #!/usr/bin/python3
 """ Place Module for HBNB project """
+from models.amenity import Amenity
 from models.base_model import BaseModel, Base
 from os import getenv
-from sqlalchemy import Column, String, ForeignKey, Integer, Float
+from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
 import models
 from models.review import Review
+
+association_table = Table('place_amenity', Base.metadata,
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id'),
+                                 primary_key=True, nullable=False),
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'),
+                                 primary_key=True, nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -26,6 +35,9 @@ class Place(BaseModel, Base):
         longitude = Column(Float)
         reviews = relationship(
             "Review", cascade="all, delete", backref="place")
+        amenities = relationship(
+            "Amenity", secondary='place_amenity',
+            back_populates='place_amenities', viewonly=False)
 
     else:
         city_id = ""
@@ -49,3 +61,21 @@ class Place(BaseModel, Base):
                 if review.place_id == self.id:
                     new_list.append(review)
             return new_list
+
+        @property
+        def amenities(self):
+            """Returns a list of 'Amenities' instances"""
+
+            new_list = []
+            for amenity in list(models.storage.all(Amenity).values()):
+                if amenity.id in self.amenity_ids:
+                    new_list.append(amenity)
+            return new_list
+
+        @amenities.setter
+        def amenities(self, obj):
+            """Setter attribute amenities that handles append
+            method for adding an Amenity.id
+            """
+            if (type(obj) == Amenity):
+                self.amenity_ids.append(obj.id)
