@@ -1,9 +1,12 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
+
+from cgi import FieldStorage
 import unittest
+import os
 from models.base_model import BaseModel
 from models import storage
-import os
+from models.engine import file_storage
 
 
 class test_fileStorage(unittest.TestCase):
@@ -21,7 +24,7 @@ class test_fileStorage(unittest.TestCase):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
-        except:
+        except Exception:
             pass
 
     def test_obj_list_empty(self):
@@ -107,3 +110,19 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_documentation(self):
+        """ Testing module docstrings documentation"""
+
+        self.assertTrue(file_storage.__doc__)
+        self.assertTrue(file_storage.FileStorage.__doc__)
+
+    def test_methods_doc(self):
+        """ Testing all docstrings documentation of each FileStorage method"""
+
+        for all_methods in dir(FieldStorage):
+            self.assertTrue(all_methods.__doc__)
+
+
+if __name__ == '__main__':
+    unittest.main()
