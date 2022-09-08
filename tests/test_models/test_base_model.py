@@ -8,6 +8,7 @@ import datetime
 from uuid import UUID
 import json
 import os
+from os import getenv
 
 
 class test_basemodel(unittest.TestCase):
@@ -49,6 +50,7 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") == "db", "Engine=FileStorage")
     def test_save(self):
         """ Testing save """
         i = self.value()
