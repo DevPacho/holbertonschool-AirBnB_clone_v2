@@ -4,6 +4,7 @@ web servers, using the function 'do_deploy' """
 
 import os.path
 from os.path import exists
+from traceback import print_tb
 from fabric.api import *
 from datetime import datetime
 
@@ -36,18 +37,20 @@ def do_deploy(archive_path):
     if not exists(archive_path):
         return False
 
-    else:
+    try:
         file_formatted = archive_path.split("/")[1].split(".")[0]
         folder = "/data/web_static/releases/"
         final_path = "{}{}".format(folder, file_formatted)
 
-        put(archive_path, "/tmp/{}".format(file_formatted))
-        run("mkdir -p {}".format(final_path))
-        run("tar -xfz /tmp/{}.tgz -C {}".format(file_formatted, final_path))
-        run("rm -f /tmp/{}.tgz".format(file_formatted))
+        put(archive_path, "/tmp/{}.tgz".format(file_formatted))
+        run("mkdir -p {}/".format(final_path))
+        run("tar -xzf /tmp/{}.tgz -C {}/".format(file_formatted, final_path))
+        run("rm /tmp/{}.tgz".format(file_formatted))
         run("mv {}/web_static/* {}/".format(final_path, final_path))
         run("rm -rf {}/web_static".format(final_path))
         run("rm -rf /data/web_static_/current")
         run("ln -s {} /data/web_static/current".format(final_path))
         return True
-    return False
+
+    except Exception:
+        return False
