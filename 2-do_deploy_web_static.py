@@ -26,6 +26,8 @@ def do_pack():
 
 
 env.hosts = ["54.234.162.16", "54.227.109.16"]
+env.user = "ubuntu"
+env.key = "~/.ssh/school"
 
 
 def do_deploy(archive_path):
@@ -39,7 +41,7 @@ def do_deploy(archive_path):
         folder = "/data/web_static/releases/"
         final_path = "{}{}".format(folder, file_formatted)
 
-        put(archive_path, "/tmp/")
+        put(archive_path, "/tmp/{}".format(file_formatted))
         run("mkdir -p {}".format(final_path))
         run("tar -xfz /tmp/{}.tgz -C {}".format(file_formatted, final_path))
         run("rm -f /tmp/{}.tgz".format(file_formatted))
