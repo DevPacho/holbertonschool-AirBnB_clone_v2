@@ -128,10 +128,17 @@ class HBNBCommand(cmd.Cmd):
 
         parameters = {}
         for parameter in args[1:]:
-            args_splitted = parameter.split("=")
+            key, splitted_value = parameter.split("=")
 
-            parameters[args_splitted[0]] = args_splitted[1].replace(
-                "_", " ").strip('"')
+            if splitted_value[0] == "\"":
+                splitted_value = str(splitted_value).strip('"').replace(
+                    "_", " ")
+            elif "." in splitted_value:
+                splitted_value = float(splitted_value)
+            else:
+                splitted_value = int(splitted_value)
+
+            parameters[key] = splitted_value
 
         new_instance = HBNBCommand.classes[args[0]]()
 
