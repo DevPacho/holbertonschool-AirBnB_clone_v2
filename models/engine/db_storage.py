@@ -10,7 +10,6 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-from sqlalchemy.sql import text
 
 
 class DBStorage:
@@ -69,3 +68,7 @@ class DBStorage:
             bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(my_session)
         self.__session = Session()
+
+    def close(self):
+        """Call 'remove()' method on the private session attribute"""
+        self.__session.close()
