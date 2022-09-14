@@ -40,7 +40,8 @@ class DBStorage:
                 objects[f"{object.__class__}.{object.id}"] = object
 
         else:
-            for input_class in self.classes:
+            classes = [State, Place, User, City, Review, Amenity]
+            for input_class in classes:
                 query = self.__session.query(input_class).all()
 
                 for object in query:
