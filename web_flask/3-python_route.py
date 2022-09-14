@@ -26,8 +26,13 @@ def display_text_args_c(text):
 
 
 @app.route("/python/")
+def display_text_args_python_text(text="is cool"):
+    """Displays a default text"""
+    return "Python {}".format(text).replace("_", " ")
+
+
 @app.route("/python/<text>")
-def display_text_args_python(text="is cool"):
+def display_text_args_python(text):
     """Displays another text past as an argument"""
     return "Python {}".format(text).replace("_", " ")
 
