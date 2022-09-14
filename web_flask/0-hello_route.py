@@ -10,7 +10,7 @@ app.url_map.strict_slashes = False
 @app.route("/")
 def display_hello():
     """Defining a view for my app root"""
-    return "Hello HBNB HOLA ddd!"
+    return "Hello HBNB!"
 
 
 if __name__ == "__main__":
