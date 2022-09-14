@@ -5,13 +5,14 @@ from models.place import Place
 from models.review import Review
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from os import getenv
+from os import getenv as env
 
 
-class User(BaseModel, Base):
+class User(BaseModel, Base if (env("HBNB_TYPE_STORAGE") == "db") else object):
     """This class defines a user by various attributes"""
-    __tablename__ = 'users'
-    if getenv("HBNB_TYPE_STORAGE") == "db":
+
+    if env("HBNB_TYPE_STORAGE") == "db":
+        __tablename__ = 'users'
         email = Column(String(128), nullable=False)
         password = Column(String(128), nullable=False)
         first_name = Column(String(128))

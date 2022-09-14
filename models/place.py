@@ -2,7 +2,7 @@
 """ Place Module for HBNB project """
 from models.amenity import Amenity
 from models.base_model import BaseModel, Base
-from os import getenv
+from os import getenv as env
 from sqlalchemy import Column, String, ForeignKey, Integer, Float, Table
 from sqlalchemy.orm import relationship
 import models
@@ -17,12 +17,11 @@ from models.review import Review
                                  primary_key=True, nullable=False))"""
 
 
-class Place(BaseModel, Base):
+class Place(BaseModel, Base if (env("HBNB_TYPE_STORAGE") == "db") else object):
     """Class that defines a Place"""
 
-    __tablename__ = "places"
-
-    if getenv("HBNB_TYPE_STORAGE") == "db":
+    if env("HBNB_TYPE_STORAGE") == "db":
+        __tablename__ = "places"
         city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
         user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
         name = Column(String(128), nullable=False)
