@@ -229,11 +229,11 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             for _, v in storage.all(HBNBCommand.classes[args]).items():
-                del v.__dict__['_sa_instance_state']
+                # del v.__dict__['_sa_instance_state']
                 print_list.append(str(v))
         else:
             for _, v in storage.all().items():
-                del v.__dict__['_sa_instance_state']
+                # del v.__dict__['_sa_instance_state']
                 print_list.append(str(v))
 
         print(print_list)
