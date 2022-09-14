@@ -20,7 +20,7 @@ def display_hbnb():
 
 
 @app.route("/c/<text>")
-def display_text_args(text):
+def display_text_args_c(text):
     """Displays a text past as an argument"""
     return "C {}".format(text).replace("_", " ")
 
