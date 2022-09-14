@@ -4,10 +4,9 @@
 from flask import Flask
 
 app = Flask(__name__)
-app.url_map.strict_slashes = False
 
 
-@app.route("/")
+@app.route("/", strict_slashes=False)
 def hello():
     """Defining a view for my app root"""
     return "Hello HBNB!"
