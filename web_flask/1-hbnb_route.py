@@ -14,7 +14,7 @@ def display_hello():
 
 
 @app.route("/hbnb")
-def hbnb():
+def display_hbnb():
     """Defining a view for '/hbnb' route"""
     return "HBNB"
 
