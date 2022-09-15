@@ -3,13 +3,14 @@
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 from models.amenity import Amenity
 from models.city import City
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+import sqlalchemy.orm
 
 
 class DBStorage:
@@ -19,6 +20,7 @@ class DBStorage:
     __session = None
 
     def __init__(self):
+        """Instantiation of the database"""
         self.__engine = create_engine(
             "mysql+mysqldb://{}:{}@{}/{}".format(
                 getenv('HBNB_MYSQL_USER'), getenv('HBNB_MYSQL_PWD'),
@@ -67,8 +69,8 @@ class DBStorage:
         Base.metadata.create_all(self.__engine)
         my_session = sessionmaker(
             bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(my_session)
-        self.__session = Session()
+        sqlalchemy.orm.Session = scoped_session(my_session)
+        self.__session = sqlalchemy.orm.Session()
 
     def close(self):
         """Call 'remove()' method on the private session attribute"""
