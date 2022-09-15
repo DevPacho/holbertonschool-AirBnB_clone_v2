@@ -2,7 +2,7 @@
 """Module that defines the new engine 'DBStorage' for MySQL"""
 from os import getenv
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session, Session
+from sqlalchemy.orm import sessionmaker, scoped_session
 from models.base_model import Base
 from models.amenity import Amenity
 from models.city import City
@@ -38,15 +38,15 @@ class DBStorage:
             query = self.__session.query(cls).all()
 
             for object in query:
-                objects[f"{object.__class__}.{object.id}"] = object
+                objects["{}.{}".format(object.__class__, object.id)] = object
 
         else:
-            classes = [State, Place, User, City, Review, Amenity]
+            classes = ["State", "Place", "User", "City", "Review", "Amenity"]
             for input_class in classes:
                 query = self.__session.query(input_class).all()
 
-                for object in query:
-                    objects[f"{object.__class__}.{object.id}"] = object
+                for obj in query:
+                    objects["{}.{}".format(object.__class__, object.id)] = obj
         return objects
 
     def new(self, obj):
